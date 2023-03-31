@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--Add style-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"> 
+</head>
+<body class="gradient-custom">
+    <!-- Nav bar -->
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="/">Boomtastic</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/cart">Cart</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        {% if 'user_id' not in session %}
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Hello, sign in
+                        </a>
+                        {% else %}
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Hello, {{session['username']}}!
+                        </a>
+                        {% endif %}
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/info">Info</a>
+                            </li>
+                            <li><a class="dropdown-item" href="/orders">Order History</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                {% if 'user_id' not in session %}
+                                <a class="dropdown-item" href="/signIn">Login</a>
+                                {% else %}
+                                <a class="dropdown-item" href="/logout">Logout</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <form action="/search" method="post" class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="title">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid  justify-content-center">
+        <div class="bg-dark text-white m-5 rounded-5 p-5">
+            <p>First Name: {{user.first_name}}</p>
+            <p>Last Name: {{user.last_name}}</p>
+            <p>Username: {{user.username}}</p>
+            <p>Email: {{user.email}}</p>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card bg-dark text-white rounded-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Have more than 1 address?</h5>
+                        <p class="card-text">Fill out this form here</p>
+                        <a href="/new_address" class="btn btn-primary">Add a new address</a>
+                    </div>
+                </div>
+            </div>
+            {% for address in addresses %}
+                <div class="col-sm-3">
+                    <div class="card bg-dark text-white rounded-5">
+                        <div class="card-body">
+                            <h5 class="card-title">{{address.city}} {{address.state}} {{address.zip_code}}</h5>
+                            <p class="card-text">{{address.street}}{{address.apt}}</p>
+                            <p class="card-text">{{address.phone_number}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!--Add script-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script> 
+</body>
+</html>
